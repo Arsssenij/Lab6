@@ -6,7 +6,8 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-a0d7c698a9d73d221b13.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.10"
@@ -27,7 +28,7 @@
 					[
 						0
 					],
-					"name" : "VectorEditor",
+					"name" : "lab6",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +39,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "VectorEditor::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-VectorEditor-Debug-c42aa78caee296e15891.json",
-					"name" : "VectorEditor",
+					"id" : "lab6::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab6-Debug-56e979f2df13e3c82c16.json",
+					"name" : "lab6",
 					"projectIndex" : 0
 				}
 			]
