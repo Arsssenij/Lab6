@@ -1,40 +1,93 @@
-#pragma once
-#include "Document.h"
-#include "GraphicPrimitive.h"
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
+
 #include <memory>
+#include "Document.h"
 
-class Controller {
-private:
-    std::unique_ptr<Document> document;
-
+class DocumentController {
 public:
-    Controller() : document(nullptr) {}
-
-    void createNewDocument(int id) {
-        document = std::make_unique<Document>(id);
+    void createDocument() {
+        std::cout << "Введите имя нового документа: ";
+        std::string name;
+        std::cin >> name;
+        document = std::make_shared<Document>(name);
+        std::cout << "Создан документ " << document->getName() << std::endl;
     }
 
-    void addPrimitiveToDocument(std::shared_ptr<GraphicPrimitive> primitive) {
-        if (document) {
-            document->addPrimitive(primitive);
+    void openDocument(const std::string& filename) {
+        if (document->getName() == filename) {
+            std::cout << "Открыт документ " << filename << std::endl;
+            std::cout << "Примитивы в документе:" << std::endl;
+            document->drawAllPrimitives();
         } else {
-            std::cout << "No document to add primitives to." << std::endl;
+            std::cout << "Документ не найден."<<std::endl;
         }
     }
 
-    void removePrimitiveFromDocument(size_t index) {
-        if (document) {
-            document->removePrimitive(index);
+    void saveDocument(const std::string& filename) {
+        if (document->getName() == filename) {
+            document->saveToFile(filename);
+            std::cout << "Примитивы в документе:" << std::endl;
+            document->drawAllPrimitives();//вызов функции отрисовки для вывода в консоль всех примитивов добавленных в данный документ
         } else {
-            std::cout << "No document to remove primitives from." << std::endl;
+            std::cout << "Документ не создан."<<std::endl;
         }
     }
 
-    void displayDocumentInfo() const {
-        if (document) {
-            document->logPrimitives();
+    void addPrimitive(const std::string& type) {
+    if (document) {
+        std::cout << "Введите имя примитива: ";
+        std::string name;
+        std::cin >> name;
+
+        if (type == "rectangle") {
+            std::cout << "Введите ширину: ";
+            double width;
+            std::cin >> width;
+            std::cout << "Введите высоту: ";
+            double height;
+            std::cin >> height;
+            document->addPrimitive(std::make_shared<Rectangle>(name, width, height));
+
+        } else if (type == "square") {
+            std::cout << "Введите длину стороны: ";
+            double side;
+            std::cin >> side;
+            document->addPrimitive(std::make_shared<Square>(name, side));
+
+        } else if (type == "circle") {
+            std::cout << "Введите радиус: ";
+            double radius;
+            std::cin >> radius;
+            document->addPrimitive(std::make_shared<Circle>(name, radius));
+
         } else {
-            std::cout << "No document to display." << std::endl;
+            std::cout << "Неподдерживаемый тип примитива.\n";
+        }
+    } else {
+        std::cout << "Документ не создан.\n";
+    }
+}
+    
+    void removePrimitive(const std::string& primitiveName, const std::string& primitiveType) {
+        if (document) {
+            document->removePrimitive(primitiveName, primitiveType);
+        } else {
+            std::cout << "Документ не создан." << std::endl;
         }
     }
+
+    void removeDocument(const std::string& filename) {
+        if (document->getName() == filename) {
+            std::cout << "Удаление документа '" << filename << "' и всех содержащихся примитивов:" << std::endl;
+            document->deleteAllPrimitives();
+            document.reset(); // Удаляет указатель на документ; примитивы удаляются автоматически, если нет других ссылок
+        } else {
+            std::cout << "Документ не создан." << std::endl;
+        }
+    }
+private:
+    std::shared_ptr<Document> document;
 };
+
+#endif

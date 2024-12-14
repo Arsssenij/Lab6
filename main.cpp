@@ -1,25 +1,79 @@
-#include "Controller.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include "Document.h"
 #include "GraphicPrimitive.h"
+#include "Controller.h"
+
+
+void printMenu() {
+    std::cout << "\nВыберите действие:\n";
+    std::cout << "1. Создать документ\n";
+    std::cout << "2. Открыть документ\n";
+    std::cout << "3. Сохранить документ\n";
+    std::cout << "4. Удалить документ\n";
+    std::cout << "5. Добавить примитив\n";
+    std::cout << "6. Удалить примитив\n";
+    std::cout << "7. Выход\n";
+    std::cout << "Введите номер действия: ";
+}
 
 int main() {
-    Controller controller;
+    std::shared_ptr<DocumentController> controller = std::make_shared<DocumentController>();
 
-    // Создаем новый документ
-    controller.createNewDocument(1);
+    while (true) {
+        printMenu();
+        int choice;
+        std::cin >> choice;
 
-    // Добавляем примитивы
-    controller.addPrimitiveToDocument(std::make_shared<Rectangle>());
-    controller.addPrimitiveToDocument(std::make_shared<Circle>());
-    controller.addPrimitiveToDocument(std::make_shared<Line>());
-
-    // Отображаем информацию о документе
-    controller.displayDocumentInfo();
-
-    // Удаляем примитив
-    controller.removePrimitiveFromDocument(1);
-
-    // Отображаем информацию снова
-    controller.displayDocumentInfo();
-
-    return 0;
+        switch (choice) {
+            case 1:
+                controller->createDocument();
+                break;
+            case 2: {
+                std::string filename;
+                std::cout << "Введите имя файла: ";
+                std::cin >> filename;
+                controller->openDocument(filename);
+                break;
+            }
+            case 3: {
+                std::string filename;
+                std::cout << "Введите имя файла: ";
+                std::cin >> filename;
+                controller->saveDocument(filename);
+                break;
+            }
+            case 4: {
+                std::string filename;
+                std::cout << "Введите имя файла: ";
+                std::cin >> filename;
+                controller->removeDocument(filename);
+                break;
+            }
+            case 5: {
+                std::cout << "Введите тип примитива (rectangle, square, circle): ";
+                std::string type;
+                std::cin >> type;
+                controller->addPrimitive(type);
+                break;
+            }
+            case 6: {
+                std::cout << "Введите тип примитива (rectangle, square, circle): ";
+                std::string type;
+                std::cin >> type;
+                std::cout << "Введите имя примитива: ";
+                std::string nameToRemove;
+                std::cin >> nameToRemove;
+                controller->removePrimitive(nameToRemove, type); 
+                break;
+            }
+            case 7:
+                std::cout << "Выход\n";
+                return 0;
+            default:
+                std::cout << "Некорректный выбор.\n";
+        }
+    }
 }
