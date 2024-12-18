@@ -12,14 +12,14 @@ public:
         return name;
     }
 
-    std::string getType() const {
+    virtual std::string getType() const {
         return type;
     }
 
-    virtual ~Primitive() = default; // Важно для полиморфизма
+    virtual ~Primitive() = default; //  деструктор производного класса,  компилятор сгенерирует реализацию по умолчанию для деструктора
 
-    virtual void draw() = 0; // Виртуальный метод для отрисовки (будет реализован в производных классах)
-    virtual std::string get() const = 0; // Чисто виртуальный метод
+    virtual void draw() = 0; //  виртуальный метод для отрисовки примитива
+    virtual std::string get() const = 0; // виртуальный метод, возвращающий строку с описанием примитива
 
 private:
     std::string name;
@@ -31,12 +31,12 @@ public:
     Rectangle(const std::string& name, double width, double height) :
         Primitive(name, "rectangle"), width(width), height(height) {}
 
-    void draw() override {
+    void draw() override { //выводит описание прямоугольника
         std::cout << "Отрисовка прямоугольника " << getName() << " (стороны: " << width << ", " << height << ")" << std::endl;
     }
     double getWidth() const { return width; }
 
-    std::string get() const override {
+    std::string get() const override {//возвращает строку с описанием прямоугольника
         return "прямоугольника " + getName() + " (стороны: " + std::to_string(width) + ", " + std::to_string(height) + ")";
     }
 
@@ -47,14 +47,19 @@ private:
 
 class Square : public Rectangle { // Наследуется от Rectangle
 public:
-    Square(const std::string& name, double side) : Rectangle(name, side, side) {} // side используется для ширины и высоты
+    Square(const std::string& name, double side) : Rectangle(name, side, side) {} 
+
     void draw() override {
-        std::cout << "Отрисовка квадрата " << getName() << " (сторона: " <<  getWidth() << ")" << std::endl; // Выводим только сторону
+        std::cout << "Отрисовка квадрата " << getName() << " (сторона: " << getWidth() << ")" << std::endl; 
     }
+
     std::string get() const override {
         return "квадрата " + getName() + " (сторона: " + std::to_string(getWidth()) + ")";
     }
-  
+
+    std::string getType() const override { // Переопределяем метод getType
+        return "square";
+    }
 };
 
 

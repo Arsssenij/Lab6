@@ -50,9 +50,29 @@ public:
         }
     }
 
+std::shared_ptr<Primitive> findPrimitive(const std::string& name, const std::string& type) {
+    for (const auto& primitive : primitives) {
+        std::cout << "Проверяем примитив: " << primitive->getName() 
+                  << " (" << primitive->getType() << ")" << std::endl;
+    }
+
+    auto it = std::find_if(primitives.begin(), primitives.end(), [&](const std::shared_ptr<Primitive>& p) {
+        return p->getName() == name && p->getType() == type;
+    });
+
+    if (it != primitives.end()) {
+        std::cout << "Найден примитив: " << (*it)->getName() << " (" << (*it)->getType() << ")" << std::endl;
+        return *it;
+    }
+
+    std::cout << "Примитив не найден: " << name << " (" << type << ")" << std::endl;
+    return nullptr;
+}
+
+
 private:
     std::string name;
-    std::vector<std::shared_ptr<Primitive>> primitives;
+    std::vector<std::shared_ptr<Primitive>> primitives; //std::shared_ptr — это умный указатель Он автоматически освобождает память, когда последний shared_ptr, владеющий ресурсом, уничтожается или перенаправляется на другой объект
 };
 
 #endif

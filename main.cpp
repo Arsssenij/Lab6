@@ -6,21 +6,20 @@
 #include "GraphicPrimitive.h"
 #include "Controller.h"
 
-
 void printMenu() {
     std::cout << "\nВыберите действие:\n";
     std::cout << "1. Создать документ\n";
     std::cout << "2. Открыть документ\n";
-    std::cout << "3. Сохранить документ\n";
-    std::cout << "4. Удалить документ\n";
-    std::cout << "5. Добавить примитив\n";
-    std::cout << "6. Удалить примитив\n";
+    std::cout << "3. Удалить документ\n";
+    std::cout << "4. Добавить примитив\n";
+    std::cout << "5. Удалить примитив\n";
+    std::cout << "6. Экспортировать примитив\n";
     std::cout << "7. Выход\n";
     std::cout << "Введите номер действия: ";
 }
 
 int main() {
-    std::shared_ptr<DocumentController> controller = std::make_shared<DocumentController>();
+    DocumentController controller;
 
     while (true) {
         printMenu();
@@ -29,44 +28,53 @@ int main() {
 
         switch (choice) {
             case 1:
-                controller->createDocument();
+                controller.createDocument();
                 break;
             case 2: {
-                std::string filename;
-                std::cout << "Введите имя файла: ";
-                std::cin >> filename;
-                controller->openDocument(filename);
+                std::string name;
+                std::cout << "Введите имя документа: ";
+                std::cin >> name;
+                controller.openDocument(name);
                 break;
             }
             case 3: {
-                std::string filename;
-                std::cout << "Введите имя файла: ";
-                std::cin >> filename;
-                controller->saveDocument(filename);
+                std::string name;
+                std::cout << "Введите имя документа: ";
+                std::cin >> name;
+                controller.removeDocument(name);
                 break;
             }
             case 4: {
-                std::string filename;
-                std::cout << "Введите имя файла: ";
-                std::cin >> filename;
-                controller->removeDocument(filename);
+                std::string docName, type;
+                std::cout << "Введите имя документа: ";
+                std::cin >> docName;
+                std::cout << "Введите тип примитива (rectangle, square, circle): ";
+                std::cin >> type;
+                controller.addPrimitive(docName, type);
                 break;
             }
             case 5: {
-                std::cout << "Введите тип примитива (rectangle, square, circle): ";
-                std::string type;
-                std::cin >> type;
-                controller->addPrimitive(type);
+                std::string docName, primitiveName, primitiveType;
+                std::cout << "Введите имя документа: ";
+                std::cin >> docName;
+                std::cout << "Введите тип примитива: ";
+                std::cin >> primitiveType;
+                std::cout << "Введите имя примитива: ";
+                std::cin >> primitiveName;
+                controller.removePrimitive(docName, primitiveName, primitiveType);
                 break;
             }
             case 6: {
-                std::cout << "Введите тип примитива (rectangle, square, circle): ";
-                std::string type;
-                std::cin >> type;
+                std::string sourceDoc, targetDoc, primitiveName, primitiveType;
+                std::cout << "Введите имя исходного документа: ";
+                std::cin >> sourceDoc;
+                std::cout << "Введите имя целевого документа: ";
+                std::cin >> targetDoc;
+                std::cout << "Введите тип примитива: ";
+                std::cin >> primitiveType;
                 std::cout << "Введите имя примитива: ";
-                std::string nameToRemove;
-                std::cin >> nameToRemove;
-                controller->removePrimitive(nameToRemove, type); 
+                std::cin >> primitiveName;
+                controller.exportPrimitive(sourceDoc, targetDoc, primitiveName, primitiveType);
                 break;
             }
             case 7:
